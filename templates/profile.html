@@ -1,0 +1,308 @@
+{% extends "topic/base.html" %}
+{% block title %}
+@{{ user.username }} 的个人主页 - CNode技术社区
+{% endblock %}
+{% block main %}
+<div id="main">
+  <div id="sidebar">
+
+  <div class="panel">
+    
+    <div class="header">
+      <span class="col_fade">个人信息</span>
+    </div>
+    <div class="inner">
+      <div class="user_card">
+  <div>
+    <a class="user_avatar" href="{{ url_for('index.user_detail', id=user.id) }}">
+      <img src="{{ user.user_image }}" title="{{ user.username }}">
+    </a>
+    <span class="user_name"><a class="dark" href="{{ url_for('index.user_detail', id=user.id) }}">{{ user.username }}</a></span>
+
+    <div class="board clearfix">
+      <div class="floor">
+        <span class="big">积分: 0 </span>
+      </div>
+    </div>
+    <div class="space clearfix"></div>
+    <span class="signature">
+        “
+        
+            {{ user.signature }}
+        
+        ”
+    </span>
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    $('.follow_btn').click(function () {
+      var $me = $(this);
+      var action = $me.attr('action');
+      var params = {
+        follow_id: '5a43700e9807389a1809f78e',
+        _csrf: 'g0HcttNH-c6-MWSb1Scw8trGcR_4DSQJEnfg'
+      };
+      $.post('/user/' + action, params, function (data) {
+        if (data.status === 'success') {
+          var $btns = $('.follow_btn');
+          if (action === 'follow') {
+            $btns.html('取消关注');
+            $btns.attr('action', 'un_follow');
+          } else {
+            $btns.html('加入关注');
+            $btns.attr('action', 'follow');
+          }
+          $btns.toggleClass('btn-success');
+        }
+      }, 'json');
+    });
+  });
+</script>
+
+
+    </div>
+    
+  </div>
+
+  
+  <div class="panel">
+    <div class="inner">
+      <a href="/topic/new?board_id={{ bid }}" id="create_topic_btn">
+        <span class="span-success">发布话题</span>
+      </a>
+    </div>
+  </div>
+  
+
+  
+    
+<div class="panel">
+  <div class="inner ads">
+
+    
+      
+      <a href="http://www.ucloud.cn/site/active/gift.html?utm_source=cnodejs&amp;utm_medium=content_pic_pc&amp;utm_campaign=multicloud&amp;utm_content=gift&amp;ytag=cnodejs" target="_blank" class="banner sponsor_outlink" data-label="ucloud-banner">
+        <img src="/static/profile/FgQS-GQDfqwAD_v0NuhyYUOUk5MG">
+      </a>
+    
+      
+        <div class="sep10"></div>
+      
+      <a href="https://alinode.aliyun.com/?ref=cnode" target="_blank" class="banner sponsor_outlink" data-label="alinode">
+        <img src="/static/profile/Fn4D6BhOTz1IswvmzeZ1q7QW1ls_">
+      </a>
+    
+  </div>
+</div>
+
+  
+
+  
+
+  
+
+  <div class="panel">
+    <div class="header">
+      <span class="col_fade">友情社区</span>
+    </div>
+    <div class="inner">
+      <ol class="friendship-community">
+        <li>
+          <a href="https://ruby-china.org/" target="_blank">
+            <img src="/static/profile/ruby-china-20150529.png">
+          </a>
+        </li>
+        <div class="sep10"></div>
+        <li>
+          <a href="http://golangtc.com/" target="_blank">
+            <img src="/static/profile/golangtc-logo.png">
+          </a>
+        </li>
+        <div class="sep10"></div>
+        <li>
+          <a href="http://phphub.org/" target="_blank">
+            <img src="/static/profile/phphub-logo.png">
+          </a>
+        </li>
+        <div class="sep10"></div>
+        <li>
+          <a href="https://testerhome.com/" target="_blank">
+            <img src="/static/profile/FjLUc7IJ2--DqS706etPQ1EGajxK">
+          </a>
+        </li>
+      </ol>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="header">
+      <span class="col_fade">客户端二维码</span>
+    </div>
+    <div class="inner cnode-app-download">
+      <img width="200" src="/static/profile/FtG0YVgQ6iginiLpf9W4_ShjiLfU">
+      <br>
+      <a href="https://github.com/soliury/noder-react-native" target="_blank">客户端源码地址</a>
+    </div>
+  </div>
+
+</div>
+
+
+<div id="content">
+  <div class="panel">
+    <div class="header">
+      <ul class="breadcrumb">
+        <li><a href="/topic/">主页</a><span class="divider">/</span></li>
+      </ul>
+    </div>
+    <div class="inner userinfo">
+      <div class="user_big_avatar">
+        <img src="{{ user.user_image }}" class="user_avatar" title="{{ user.username }}">
+      </div>
+      <a class="dark">{{ user.username }}</a>
+
+      <div class="user_profile">
+        <ul class="unstyled">
+          <span class="big">0</span> 积分
+          
+          
+          
+          
+          <li>
+            <i class="fa fa-lg fa-fw fa-github"></i>
+            <a class="dark" href="https://github.com/wangqian6151" target="_blank">
+              @{{ user.username }}
+            </a>
+          </li>
+          
+          
+        </ul>
+      </div>
+      <p class="col_fade">注册时间 1 天前</p>
+      
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="header">
+      <span class="col_fade">最近创建的话题</span>
+    </div>
+    
+    <div class="inner">
+      <div class="inner post">
+        <div class="topic_list">
+          {% for t in recent_topics %}
+          <div class="cell">
+              <div class="topic_title_wrapper">
+                  <a class="user_avatar" href="{{ url_for('index.user_detail', id=user.id) }}">
+                    <img src="{{ t.user().user_image }}" title="{{ user.username }}">
+                  </a>
+                  <span>{{ t.replies() | count }} / {{ t.views }}</span>
+                  <a class="topic_title" href="{{ url_for('topic.detail', id=t.id) }}">
+                      {{ t.title }}
+                  </a>
+              </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="panel">
+    <div class="header">
+      <span class="col_fade">最近参与的话题</span>
+    </div>
+    
+    <div class="inner">
+      <div class="inner post">
+        <div class="topic_list">
+          {% for t in recent_replies %}
+          <div class="cell">
+              <div class="topic_title_wrapper">
+                  <a class="user_avatar" href="{{ url_for('index.user_detail', id=user.id) }}">
+                    <img src="{{ t.user().user_image }}" title="{{ user.username }}">
+                  </a>
+                  <span>{{ t.replies() | count }} / {{ t.views }}</span>
+                  <a class="topic_title" href="{{ url_for('topic.detail', id=t.id) }}">
+                      {{ t.title }}
+                  </a>
+              </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    $('#set_star_btn').click(function () {
+      var $me = $(this);
+      var action = $me.attr('action');
+      var params = {
+        user_id: '5a43700e9807389a1809f78e',
+        _csrf: 'g0HcttNH-c6-MWSb1Scw8trGcR_4DSQJEnfg'
+      };
+      $.post('/user/' + action, params, function (data) {
+        if (data.status === 'success') {
+          if (action === 'set_star') {
+            $me.html('取消达人');
+            $me.attr('action', 'cancel_star');
+          } else {
+            $me.html('设为达人');
+            $me.attr('action', 'set_star');
+          }
+        }
+      }, 'json');
+    });
+
+    $('#set_block_btn').click(function () {
+      var $me = $(this);
+      var action = $me.attr('action');
+      var params = {
+        _csrf: 'g0HcttNH-c6-MWSb1Scw8trGcR_4DSQJEnfg',
+        action: action
+      };
+      if (action === 'set_block' && !confirm('确定要屏蔽该用户吗？')) {
+        return;
+      }
+      $.post('/user/wangqian6151/block', params, function (data) {
+        if (data.status === 'success') {
+          if (action === 'set_block') {
+            $me.html('取消屏蔽用户');
+            $me.attr('action', 'cancel_block');
+          } else if (action === 'cancel_block') {
+            $me.html('屏蔽用户');
+            $me.attr('action', 'set_block');
+          }
+        }
+      }, 'json');
+    })
+
+    $('#delete_all').click(function () {
+      var $me = $(this);
+      var params = {
+        _csrf: 'g0HcttNH-c6-MWSb1Scw8trGcR_4DSQJEnfg',
+      };
+      if (!confirm('确定要删除吗？（不会永久删除，只做标记位）')) {
+        return;
+      }
+      $.post('/user/wangqian6151/delete_all', params, function (data) {
+        if (data.status === 'success') {
+          alert('操作成功');
+        }
+      }, 'json');
+    })
+  });
+</script>
+
+
+</div>
+{% endblock %}
